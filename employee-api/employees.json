@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "age": 30,
+    "department": "Engineering",
+    "salary": 80000,
+    "email": "alice@company.com",
+    "location": "Bangalore"
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "age": 25,
+    "department": "Marketing",
+    "salary": 60000,
+    "email": "bob@company.com",
+    "location": "Mumbai"
+  },
+  {
+    "id": 3,
+    "name": "Charlie",
+    "age": 35,
+    "department": "Engineering",
+    "salary": 95000,
+    "email": "charlie@company.com",
+    "location": "Hyderabad"
+  },
+  {
+    "id": 4,
+    "name": "Diana",
+    "age": 28,
+    "department": "HR",
+    "salary": 50000,
+    "email": "diana@company.com",
+    "location": "Chennai"
+  },
+  {
+    "id": 5,
+    "name": "Eve",
+    "age": 40,
+    "department": "Marketing",
+    "salary": 85000,
+    "email": "eve@company.com",
+    "location": "Pune"
+  }
+]
