@@ -1,5 +1,5 @@
 # models/user_model.py
-from extensions import db  # ✅ Import db from extensions
+from extensions import db
 from datetime import datetime
 
 class User(db.Model):
