@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Account Details - SecureBank{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0">Account Details</h1>
+            <p class="text-muted">{{ account.account_number }}</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Account Number</h6>
+                    <div class="h4">{{ account.account_number }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Account Type</h6>
+                    <div class="h4">{{ account.account_type.title() }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Current Balance</h6>
+                    <div class="h4 balance-positive">${{ "%.2f"|format(account.balance) }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Transaction History</h5>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if transaction.transaction_type == 'deposit' %}success{% elif transaction.transaction_type == 'withdrawal' %}danger{% else %}info{% endif %}">
+                                                {{ transaction.transaction_type.title() }}
+                                            </span>
+                                        </td>
+                                        <td>{{ transaction.description or 'No description' }}</td>
+                                        <td class="{% if transaction.transaction_type == 'deposit' %}balance-positive{% else %}balance-negative{% endif %}">
+                                            {% if transaction.transaction_type == 'deposit' %}+{% else %}-{% endif %}${{ "%.2f"|format(transaction.amount) }}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{% if transaction.status == 'completed' %}success{% elif transaction.status == 'pending' %}warning{% else %}danger{% endif %}">
+                                                {{ transaction.status.title() }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No transactions found for this account.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SecureBank{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0">Welcome back, {{ user.full_name }}!</h1>
+            <p class="text-muted">Here's your account overview</p>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-muted">Total Balance</h6>
+                            <div class="kpi-value balance-positive">${{ "%.2f"|format(total_balance) }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-dollar-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-muted">Total Accounts</h6>
+                            <div class="kpi-value">{{ total_accounts }}</div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-credit-card fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-muted">Monthly Deposits</h6>
+                            <div class="kpi-value balance-positive">${{ "%.2f"|format(monthly_deposits) }}</div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-arrow-up fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title text-muted">Monthly Withdrawals</h6>
+                            <div class="kpi-value balance-negative">${{ "%.2f"|format(monthly_withdrawals) }}</div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-arrow-down fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Accounts Overview -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Your Accounts</h5>
+                </div>
+                <div class="card-body">
+                    {% if accounts %}
+                        {% for account in accounts %}
+                        <div class="d-flex justify-content-between align-items-center p-3 border rounded mb-3">
+                            <div>
+                                <h6 class="mb-1">{{ account.account_number }}</h6>
+                                <small class="text-muted">{{ account.account_type.title() }} Account</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="h5 mb-0 balance-positive">${{ "%.2f"|format(account.balance) }}</div>
+                                <a href="{{ url_for('account_details', account_id=account.id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No accounts found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Transactions</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                        {% for transaction in recent_transactions %}
+                        <div class="transaction-card card mb-2">
+                            <div class="card-body py-2">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <small class="text-muted">{{ transaction.transaction_type.title() }}</small>
+                                        <p class="mb-1 small">{{ transaction.description or 'No description' }}</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="{% if transaction.transaction_type == 'deposit' %}balance-positive{% else %}balance-negative{% endif %}">
+                                            {% if transaction.transaction_type == 'deposit' %}+{% else %}-{% endif %}${{ "%.2f"|format(transaction.amount) }}
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">{{ transaction.created_at.strftime('%m/%d %H:%M') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No recent transactions.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Balance Chart -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Account Balance Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="balanceChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Account Balance Chart
+    const ctx = document.getElementById('balanceChart').getContext('2d');
+    const accounts = {{ accounts | tojson }};
+    
+    const labels = accounts.map(account => account.account_number);
+    const data = accounts.map(account => parseFloat(account.balance));
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#3498db',
+                    '#e74c3c',
+                    '#f39c12',
+                    '#27ae60',
+                    '#9b59b6'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
