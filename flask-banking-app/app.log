@@ -1,0 +1,50 @@
+[2025-07-11 21:00:02,141] WARNING in _internal:  * Debugger is active!
+[2025-07-11 21:00:02,154] INFO in _internal:  * Debugger PIN: 948-819-578
+[2025-07-11 21:00:07,816] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2025-07-11 21:00:07,816] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-07-11 21:00:07,818] INFO in _internal:  * Restarting with stat
+[2025-07-11 21:00:08,524] WARNING in _internal:  * Debugger is active!
+[2025-07-11 21:00:08,531] INFO in _internal:  * Debugger PIN: 948-819-578
+[2025-07-11 21:00:17,062] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:17] "GET /login HTTP/1.1" 200 -
+[2025-07-11 21:00:19,383] INFO in app: Generated JWT token for user_id=3
+[2025-07-11 21:00:19,384] INFO in app: User 'ragh.p' logged in successfully
+[2025-07-11 21:00:19,385] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:19] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-07-11 21:00:19,693] INFO in app: JWT token verified for user_id=3
+[2025-07-11 21:00:19,697] INFO in app: User ragh.p accessed /dashboard
+[2025-07-11 21:00:19,722] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:19] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-11 21:00:22,191] INFO in app: JWT token verified for user_id=3
+[2025-07-11 21:00:22,192] INFO in app: User 3 logged out
+[2025-07-11 21:00:22,193] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:22] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2025-07-11 21:00:22,457] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:22] "GET /login HTTP/1.1" 200 -
+[2025-07-11 21:00:30,146] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:30] "GET /register HTTP/1.1" 200 -
+[2025-07-11 21:00:35,849] WARNING in app: Failed login attempt for username: sreeram
+[2025-07-11 21:00:35,853] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:35] "POST /login HTTP/1.1" 200 -
+[2025-07-11 21:00:42,646] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:00:42] "GET /register HTTP/1.1" 200 -
+[2025-07-11 21:01:20,931] INFO in app: User registered: seeram
+[2025-07-11 21:01:20,937] INFO in app: Default account created for user 'seeram' - ACC6762290966
+[2025-07-11 21:01:20,938] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:20] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2025-07-11 21:01:20,942] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:20] "GET /login HTTP/1.1" 200 -
+[2025-07-11 21:01:26,701] WARNING in app: Failed login attempt for username: sreeram
+[2025-07-11 21:01:26,703] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:26] "POST /login HTTP/1.1" 200 -
+[2025-07-11 21:01:37,077] WARNING in app: Failed login attempt for username: sreeram
+[2025-07-11 21:01:37,079] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:37] "POST /login HTTP/1.1" 200 -
+[2025-07-11 21:01:52,446] WARNING in app: Failed login attempt for username: sreeram
+[2025-07-11 21:01:52,449] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:52] "POST /login HTTP/1.1" 200 -
+[2025-07-11 21:01:56,262] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:01:56] "GET /register HTTP/1.1" 200 -
+[2025-07-11 21:02:18,047] WARNING in app: Attempted registration with existing email: sreeram@cgi.com
+[2025-07-11 21:02:18,050] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:02:18] "POST /register HTTP/1.1" 200 -
+[2025-07-11 21:02:24,637] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:02:24] "GET /login HTTP/1.1" 200 -
+[2025-07-11 21:02:35,733] WARNING in app: Failed login attempt for username: sreeram
+[2025-07-11 21:02:35,734] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:02:35] "POST /login HTTP/1.1" 200 -
+[2025-07-11 21:02:39,290] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:02:39] "GET /register HTTP/1.1" 200 -
+[2025-07-11 21:03:16,361] INFO in app: User registered: sriram
+[2025-07-11 21:03:16,364] INFO in app: Default account created for user 'sriram' - ACC6817685635
+[2025-07-11 21:03:16,364] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:03:16] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2025-07-11 21:03:16,417] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:03:16] "GET /login HTTP/1.1" 200 -
+[2025-07-11 21:03:26,261] INFO in app: Generated JWT token for user_id=5
+[2025-07-11 21:03:26,261] INFO in app: User 'sriram' logged in successfully
+[2025-07-11 21:03:26,261] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:03:26] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-07-11 21:03:26,581] INFO in app: JWT token verified for user_id=5
+[2025-07-11 21:03:26,585] INFO in app: User sriram accessed /dashboard
+[2025-07-11 21:03:26,594] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:03:26] "GET /dashboard HTTP/1.1" 200 -
