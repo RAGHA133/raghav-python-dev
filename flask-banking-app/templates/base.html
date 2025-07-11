@@ -80,27 +80,8 @@
             {% endif %}
         {% endwith %}
 
-        {% if request.endpoint not in ['login', 'register'] %}
-        <div class="row">
-            <div class="col-md-2 sidebar">
-                <h5 class="text-light px-3">Navigation</h5>
-                <a href="{{ url_for('dashboard') }}">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </a>
-                <a href="{{ url_for('transfer') }}">
-                    <i class="fas fa-exchange-alt"></i> Transfer
-                </a>
-                <a href="{{ url_for('api_kpis') }}">
-                    <i class="fas fa-chart-bar"></i> KPIs API
-                </a>
-            </div>
-            <div class="col-md-10 main-content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-        {% else %}
-            {% block content %}{% endblock %}
-        {% endif %}
+        {% block content %}
+        {% endblock %}
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

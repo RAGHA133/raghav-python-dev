@@ -6,8 +6,8 @@ import os
 DB_CONFIG = {
     'host': 'localhost',
     'port': 5432,
-    'user': 'postgres',  # Change this to your PostgreSQL username
-    'password': 'password',  # Change this to your PostgreSQL password
+    'user': 'postgres',
+    'password': 'postgres',  # ✅ Updated password
     'database': 'bankdb'
 }
 
@@ -20,26 +20,26 @@ def create_database():
             port=DB_CONFIG['port'],
             user=DB_CONFIG['user'],
             password=DB_CONFIG['password'],
-            database='postgres'  # Connect to default database
+            database='postgres'  # Connect to default db to create new db
         )
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cursor = conn.cursor()
-        
+
         # Check if database exists
         cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{DB_CONFIG['database']}'")
         exists = cursor.fetchone()
-        
+
         if not exists:
             cursor.execute(f"CREATE DATABASE {DB_CONFIG['database']}")
-            print(f"Database '{DB_CONFIG['database']}' created successfully!")
+            print(f"✅ Database '{DB_CONFIG['database']}' created successfully!")
         else:
-            print(f"Database '{DB_CONFIG['database']}' already exists.")
-        
+            print(f"ℹ️  Database '{DB_CONFIG['database']}' already exists.")
+
         cursor.close()
         conn.close()
-        
+
     except Exception as e:
-        print(f"Error creating database: {e}")
+        print(f"❌ Error creating database: {e}")
 
 def create_sample_data():
     """Create sample data for testing"""
@@ -47,12 +47,10 @@ def create_sample_data():
     from werkzeug.security import generate_password_hash
     from decimal import Decimal
     import random
-    
+
     with app.app_context():
-        # Create all tables
         db.create_all()
-        
-        # Create sample users
+
         users_data = [
             {
                 'username': 'john_doe',
@@ -67,7 +65,7 @@ def create_sample_data():
                 'full_name': 'Jane Smith'
             }
         ]
-        
+
         for user_data in users_data:
             existing_user = User.query.filter_by(username=user_data['username']).first()
             if not existing_user:
@@ -79,13 +77,12 @@ def create_sample_data():
                 )
                 db.session.add(user)
                 db.session.commit()
-                
-                # Create accounts for each user
+
                 accounts_data = [
                     {'type': 'checking', 'balance': 5000.00},
                     {'type': 'savings', 'balance': 15000.00}
                 ]
-                
+
                 for account_data in accounts_data:
                     account = Account(
                         account_number=f"ACC{random.randint(1000000000, 9999999999)}",
@@ -95,15 +92,14 @@ def create_sample_data():
                     )
                     db.session.add(account)
                     db.session.commit()
-                    
-                    # Create sample transactions
+
                     transactions_data = [
                         {'type': 'deposit', 'amount': 1000.00, 'description': 'Initial deposit'},
                         {'type': 'withdrawal', 'amount': 200.00, 'description': 'ATM withdrawal'},
                         {'type': 'deposit', 'amount': 500.00, 'description': 'Salary deposit'},
                         {'type': 'withdrawal', 'amount': 150.00, 'description': 'Online purchase'}
                     ]
-                    
+
                     for trans_data in transactions_data:
                         transaction = Transaction(
                             transaction_type=trans_data['type'],
@@ -112,15 +108,15 @@ def create_sample_data():
                             account_id=account.id
                         )
                         db.session.add(transaction)
-                
+
                 db.session.commit()
-                print(f"Sample data created for user: {user_data['username']}")
-        
-        print("Sample data creation completed!")
+                print(f"✅ Sample data created for user: {user_data['username']}")
+
+        print("🎉 Sample data creation completed!")
 
 if __name__ == "__main__":
-    print("Setting up database...")
+    print("🔧 Setting up database...")
     create_database()
-    print("Creating sample data...")
+    print("📥 Creating sample data...")
     create_sample_data()
-    print("Database setup completed!")
+    print("✅ Database setup completed!")
