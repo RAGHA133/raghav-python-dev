@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,6 +7,17 @@ from datetime import datetime, timedelta
 from functools import wraps
 from decimal import Decimal
 import random
+
+# Logging setup
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -19,7 +31,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 # Initialize DB
 db = SQLAlchemy(app)
 
-# Database Models
+# Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -59,36 +71,45 @@ class Transaction(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(20), default='completed')
 
-# JWT Token Utilities
+# JWT utilities
 def generate_token(user_id):
     payload = {
         'user_id': user_id,
         'exp': datetime.utcnow() + app.config['JWT_ACCESS_TOKEN_EXPIRES']
     }
-    return jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
+    token = jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
+    logger.info(f"Generated JWT token for user_id={user_id}")
+    return token
 
 def verify_token(token):
     try:
         payload = jwt.decode(token, app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+        logger.info(f"JWT token verified for user_id={payload['user_id']}")
         return payload['user_id']
     except jwt.ExpiredSignatureError:
+        logger.warning("JWT token expired")
         return None
     except jwt.InvalidTokenError:
+        logger.error("Invalid JWT token")
         return None
 
-# Authentication Decorator
+# Decorator
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.cookies.get('token')
         if not token:
+            logger.warning("Missing JWT token in request")
             return redirect(url_for('login'))
         user_id = verify_token(token)
         if not user_id:
+            logger.warning("JWT verification failed")
             return redirect(url_for('login'))
         current_user = db.session.get(User, user_id)
         if not current_user:
+            logger.warning(f"User not found for user_id: {user_id}")
             return redirect(url_for('login'))
+        logger.info(f"User {current_user.username} accessed {request.path}")
         return f(current_user, *args, **kwargs)
     return decorated
 
@@ -107,8 +128,10 @@ def login():
             token = generate_token(user.id)
             response = make_response(redirect(url_for('dashboard')))
             response.set_cookie('token', token, max_age=3600)
+            logger.info(f"User '{username}' logged in successfully")
             return response
         else:
+            logger.warning(f"Failed login attempt for username: {username}")
             flash('Invalid username or password')
     return render_template('login.html')
 
@@ -122,10 +145,12 @@ def register():
 
         if User.query.filter_by(username=username).first():
             flash('Username already exists')
+            logger.warning(f"Attempted registration with existing username: {username}")
             return render_template('register.html')
 
         if User.query.filter_by(email=email).first():
             flash('Email already exists')
+            logger.warning(f"Attempted registration with existing email: {email}")
             return render_template('register.html')
 
         user = User(
@@ -136,6 +161,7 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
+        logger.info(f"User registered: {username}")
 
         account_number = f"ACC{random.randint(1000000000, 9999999999)}"
         account = Account(
@@ -146,6 +172,7 @@ def register():
         )
         db.session.add(account)
         db.session.commit()
+        logger.info(f"Default account created for user '{username}' - {account_number}")
 
         flash('Registration successful! You can now login.')
         return redirect(url_for('login'))
@@ -157,7 +184,6 @@ def register():
 def dashboard(current_user):
     account_objs = Account.query.filter_by(user_id=current_user.id, is_active=True).all()
     accounts = [acc.to_dict() for acc in account_objs]
-
     total_balance = sum(acc['balance'] for acc in accounts)
     total_accounts = len(accounts)
 
@@ -192,6 +218,7 @@ def account_details(current_user, account_id):
     account = Account.query.filter_by(id=account_id, user_id=current_user.id).first()
     if not account:
         flash('Account not found')
+        logger.warning(f"User {current_user.username} tried accessing non-existent account ID: {account_id}")
         return redirect(url_for('dashboard'))
     transactions = Transaction.query.filter_by(account_id=account.id).order_by(
         Transaction.created_at.desc()
@@ -212,10 +239,12 @@ def transfer(current_user):
 
         if not from_account or not to_account:
             flash('Invalid account details')
+            logger.warning(f"Transfer failed: Invalid account (from: {from_account_id}, to: {to_account_number})")
             return redirect(url_for('transfer'))
 
         if float(from_account.balance) < amount:
             flash('Insufficient funds')
+            logger.warning(f"Transfer failed: Insufficient funds in account {from_account.account_number}")
             return redirect(url_for('transfer'))
 
         from_account.balance -= Decimal(str(amount))
@@ -227,7 +256,6 @@ def transfer(current_user):
             description=f'Transfer to {to_account.account_number}: {description}',
             account_id=from_account.id
         ))
-
         db.session.add(Transaction(
             transaction_type='deposit',
             amount=Decimal(str(amount)),
@@ -236,6 +264,7 @@ def transfer(current_user):
         ))
 
         db.session.commit()
+        logger.info(f"Transfer of {amount} from {from_account.account_number} to {to_account.account_number}")
         flash('Transfer completed successfully')
         return redirect(url_for('dashboard'))
 
@@ -254,6 +283,9 @@ def api_kpis(current_user):
 
 @app.route('/logout')
 def logout():
+    token = request.cookies.get('token')
+    user_id = verify_token(token) if token else None
+    logger.info(f"User {user_id} logged out")
     response = make_response(redirect(url_for('login')))
     response.set_cookie('token', '', expires=0)
     return response
