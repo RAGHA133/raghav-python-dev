@@ -48,3 +48,59 @@
 [2025-07-11 21:03:26,581] INFO in app: JWT token verified for user_id=5
 [2025-07-11 21:03:26,585] INFO in app: User sriram accessed /dashboard
 [2025-07-11 21:03:26,594] INFO in _internal: 127.0.0.1 - - [11/Jul/2025 21:03:26] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-14 12:21:22,879] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 12:21:22] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2025-07-14 16:06:55,870] INFO in app: User None logged out
+[2025-07-14 16:06:55,887] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:06:55] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2025-07-14 16:06:56,111] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:06:56] "GET /login HTTP/1.1" 200 -
+[2025-07-14 16:06:58,733] INFO in app: Generated JWT token for user_id=5
+[2025-07-14 16:06:58,733] INFO in app: User 'sriram' logged in successfully
+[2025-07-14 16:06:58,735] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:06:58] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-07-14 16:06:59,063] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:06:59,069] INFO in app: User sriram accessed /dashboard
+[2025-07-14 16:06:59,088] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:06:59] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-14 16:07:04,375] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:07:04,375] INFO in app: User 5 logged out
+[2025-07-14 16:07:04,377] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:04] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2025-07-14 16:07:04,689] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:04] "GET /login HTTP/1.1" 200 -
+[2025-07-14 16:07:12,052] INFO in app: Generated JWT token for user_id=5
+[2025-07-14 16:07:12,053] INFO in app: User 'sriram' logged in successfully
+[2025-07-14 16:07:12,055] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:12] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-07-14 16:07:12,369] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:07:12,373] INFO in app: User sriram accessed /dashboard
+[2025-07-14 16:07:12,382] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:12] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-14 16:07:15,728] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:07:15,731] INFO in app: User sriram accessed /account/7
+[2025-07-14 16:07:15,802] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:15] "GET /account/7 HTTP/1.1" 200 -
+[2025-07-14 16:07:17,437] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:07:17,440] INFO in app: User sriram accessed /dashboard
+[2025-07-14 16:07:17,450] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:17] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-14 16:07:18,363] INFO in app: JWT token verified for user_id=5
+[2025-07-14 16:07:18,364] INFO in app: User 5 logged out
+[2025-07-14 16:07:18,366] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:18] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2025-07-14 16:07:18,687] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 16:07:18] "GET /login HTTP/1.1" 200 -
+[2025-07-14 18:06:23,136] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:06:23] "GET /register HTTP/1.1" 200 -
+[2025-07-14 18:06:54,970] INFO in app: User registered: lohit
+[2025-07-14 18:06:54,980] INFO in app: Default account created for user 'lohit' - ACC1714767555
+[2025-07-14 18:06:54,989] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:06:54] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2025-07-14 18:06:55,318] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:06:55] "GET /login HTTP/1.1" 200 -
+[2025-07-14 18:07:04,127] INFO in app: Generated JWT token for user_id=6
+[2025-07-14 18:07:04,128] INFO in app: User 'lohit' logged in successfully
+[2025-07-14 18:07:04,130] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:07:04] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-07-14 18:07:04,451] INFO in app: JWT token verified for user_id=6
+[2025-07-14 18:07:04,456] INFO in app: User lohit accessed /dashboard
+[2025-07-14 18:07:04,475] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:07:04] "GET /dashboard HTTP/1.1" 200 -
+[2025-07-14 18:07:07,708] INFO in app: JWT token verified for user_id=6
+[2025-07-14 18:07:07,711] INFO in app: User lohit accessed /account/8
+[2025-07-14 18:07:07,716] INFO in _internal: 127.0.0.1 - - [14/Jul/2025 18:07:07] "GET /account/8 HTTP/1.1" 200 -
+[2025-07-16 20:41:44,541] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2025-07-16 20:41:44,542] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-07-16 20:41:44,546] INFO in _internal:  * Restarting with stat
+[2025-07-16 20:41:45,329] WARNING in _internal:  * Debugger is active!
+[2025-07-16 20:41:45,338] INFO in _internal:  * Debugger PIN: 948-819-578
+[2025-07-16 20:42:04,246] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:42:04] "[32mGET / HTTP/1.1[0m" 302 -
+[2025-07-16 20:42:04,509] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:42:04] "GET /login HTTP/1.1" 200 -
+[2025-07-16 20:42:04,576] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:42:04] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2025-07-16 20:42:07,650] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:42:07] "GET /login HTTP/1.1" 200 -
+[2025-07-16 20:43:49,963] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:43:49] "[32mGET / HTTP/1.1[0m" 302 -
+[2025-07-16 20:43:50,232] INFO in _internal: 127.0.0.1 - - [16/Jul/2025 20:43:50] "GET /login HTTP/1.1" 200 -
